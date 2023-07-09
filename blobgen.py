@@ -15,7 +15,6 @@ class Blob(NamedTuple):
 
 class BlobMap:
     def __init__(self, nblobs: int, width: float, height: float):
-
         self.nblobs = nblobs
         self.width = width
         self.height = height
@@ -62,6 +61,12 @@ def plot_surf(X, Y, Z):
     ax.plot_surface(X, Y, Z)
 
 
+def print_map_to_file(f, X, Y, Z):
+    print(*X.shape, file=f)
+    for x, y, z in zip(X.flat, Y.flat, Z.flat):
+        print(x, y, z, file=f)
+
+
 if __name__ == "__main__":
     width = 4
     height = 4
@@ -70,6 +75,9 @@ if __name__ == "__main__":
     blob_map = BlobMap(nblobs, width, height)
 
     X, Y, Z = blob_map.mapgen()
+
+    with open("map.dat", "w") as f:
+        print_map_to_file(f, X, Y, Z)
 
     plot_blob_origins(blob_map)
     plot_surf(X, Y, Z)
